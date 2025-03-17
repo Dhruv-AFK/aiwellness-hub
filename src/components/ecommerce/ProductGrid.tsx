@@ -7,7 +7,6 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  cryptoPrice: number; // ETH price
   rating: number;
   image: string;
   category: string;
@@ -20,7 +19,6 @@ const products: Product[] = [
     name: 'Ashwagandha Capsules',
     description: 'Organic stress-relief and immunity booster capsules',
     price: 29.99,
-    cryptoPrice: 0.012,
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1565071559227-20451284a65e?q=80&w=2940&auto=format&fit=crop',
     category: 'Supplements',
@@ -31,7 +29,6 @@ const products: Product[] = [
     name: 'Turmeric Latte Mix',
     description: 'Anti-inflammatory golden milk powder blend',
     price: 19.99,
-    cryptoPrice: 0.008,
     rating: 4.7,
     image: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f6?q=80&w=2787&auto=format&fit=crop',
     category: 'Foods'
@@ -41,7 +38,6 @@ const products: Product[] = [
     name: 'Amla Berry Extract',
     description: 'Vitamin C rich immunity booster',
     price: 24.99,
-    cryptoPrice: 0.010,
     rating: 4.5,
     image: 'https://images.unsplash.com/photo-1543362906-acfc16c67564?q=80&w=2301&auto=format&fit=crop',
     category: 'Supplements',
@@ -52,7 +48,6 @@ const products: Product[] = [
     name: 'Meditation Cushion Set',
     description: 'Ergonomic cushion for proper meditation posture',
     price: 59.99,
-    cryptoPrice: 0.025,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=2940&auto=format&fit=crop',
     category: 'Lifestyle'
@@ -62,7 +57,6 @@ const products: Product[] = [
     name: 'Ayurvedic Face Oil',
     description: 'Balancing facial oil with neem and turmeric',
     price: 34.99,
-    cryptoPrice: 0.014,
     rating: 4.6,
     image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=2942&auto=format&fit=crop',
     category: 'Skincare'
@@ -72,7 +66,6 @@ const products: Product[] = [
     name: 'Triphala Supplement',
     description: 'Digestive health and detoxification support',
     price: 22.99,
-    cryptoPrice: 0.009,
     rating: 4.4,
     image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2940&auto=format&fit=crop',
     category: 'Supplements'
@@ -81,7 +74,6 @@ const products: Product[] = [
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [showCrypto, setShowCrypto] = useState(true);
   
   return (
     <div 
@@ -139,26 +131,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </div>
         
         <div className="mt-auto flex justify-between items-center">
-          <div className="flex flex-col">
-            <div 
-              className="font-bold text-lg cursor-pointer flex items-center gap-1" 
-              onClick={() => setShowCrypto(!showCrypto)}
-              title="Click to toggle between ETH and USD"
-            >
-              {showCrypto ? (
-                <>
-                  <span className="text-health-purple">{product.cryptoPrice} ETH</span>
-                </>
-              ) : (
-                <>
-                  <span>${product.price}</span>
-                </>
-              )}
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {showCrypto ? `$${product.price}` : `${product.cryptoPrice} ETH`}
-            </div>
-          </div>
+          <div className="font-bold text-lg">${product.price}</div>
           <button className="btn-primary py-2 px-4">Add to Cart</button>
         </div>
       </div>

@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, Wallet } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -29,8 +30,6 @@ const Navbar: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   // Handle scroll effect
   useEffect(() => {
@@ -50,33 +49,6 @@ const Navbar: React.FC = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
-  };
-
-  // Handle wallet connection
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        // Request account access
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setWalletAddress(accounts[0]);
-        setWalletConnected(true);
-        console.log("Wallet connected:", accounts[0]);
-      } catch (error) {
-        console.error("User denied account access");
-      }
-    } else {
-      alert("MetaMask is not installed. Please install MetaMask to use this feature.");
-    }
-  };
-
-  const disconnectWallet = () => {
-    setWalletAddress(null);
-    setWalletConnected(false);
-  };
-
-  // Format wallet address for display
-  const formatAddress = (address: string) => {
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
 
   return (
@@ -128,31 +100,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-3">
-          {/* MetaMask Connection */}
-          {walletConnected ? (
-            <div className="hidden md:flex items-center gap-2">
-              <div className="px-3 py-1.5 rounded-full bg-health-amber/10 text-health-amber text-sm flex items-center gap-1.5">
-                <Wallet className="h-4 w-4" />
-                <span>{formatAddress(walletAddress!)}</span>
-              </div>
-              <button 
-                onClick={disconnectWallet}
-                className="text-xs text-muted-foreground hover:text-foreground"
-              >
-                Disconnect
-              </button>
-            </div>
-          ) : (
-            <button 
-              onClick={connectWallet}
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors"
-            >
-              <Wallet className="h-4 w-4" />
-              <span className="text-sm">Connect Wallet</span>
-            </button>
-          )}
-          
+        <div className="flex items-center gap-4">
           <button 
             onClick={toggleDarkMode}
             className="w-10 h-10 rounded-full flex items-center justify-center bg-muted hover:bg-muted/80 transition-colors"
@@ -228,32 +176,6 @@ const Navbar: React.FC = () => {
           >
             Get Started
           </a>
-          
-          {/* Mobile Wallet Connection */}
-          {walletConnected ? (
-            <div className="mt-4 flex flex-col gap-2">
-              <div className="px-4 py-3 rounded-lg bg-health-amber/10 text-health-amber text-sm flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Wallet className="h-5 w-5" />
-                  <span>{formatAddress(walletAddress!)}</span>
-                </div>
-                <button 
-                  onClick={disconnectWallet}
-                  className="text-xs text-muted-foreground hover:text-foreground"
-                >
-                  Disconnect
-                </button>
-              </div>
-            </div>
-          ) : (
-            <button 
-              onClick={connectWallet}
-              className="mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-muted hover:bg-muted/80 transition-colors w-full"
-            >
-              <Wallet className="h-5 w-5" />
-              <span>Connect MetaMask</span>
-            </button>
-          )}
         </div>
       </div>
     </nav>

@@ -5,6 +5,7 @@ import HeroSection from '@/components/landing/HeroSection';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import ChatInterface from '@/components/ai/ChatInterface';
 import HealthDashboard from '@/components/health/HealthDashboard';
+import WatchConnect from '@/components/health/WatchConnect';
 import ProductGrid from '@/components/ecommerce/ProductGrid';
 import DoctorsList from '@/components/doctors/DoctorsList';
 import Footer from '@/components/layout/Footer';
@@ -48,6 +49,7 @@ const Index = () => {
         <HeroSection />
         <FeaturesSection />
         <HealthDashboard />
+        <WatchConnect />
         <ChatInterface />
         <ProductGrid />
         <DoctorsList />

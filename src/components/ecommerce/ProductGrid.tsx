@@ -1,213 +1,188 @@
 
 import React, { useState } from 'react';
-import { ShoppingCart, Star, Heart, ArrowRight, Filter, Search } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { ShoppingCart, Heart, Filter, Eye, ArrowUpDown } from 'lucide-react';
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  rating: number;
-  image: string;
-  category: string;
-  tag?: string;
-}
-
-const products: Product[] = [
+// Example product data
+const products = [
   {
-    id: '1',
-    name: 'Ashwagandha Capsules',
-    description: 'Organic stress-relief and immunity booster capsules',
-    price: 29.99,
+    id: 1,
+    name: "Ayurvedic Immunity Booster",
+    description: "Natural herbal supplement to strengthen immunity",
+    price: 0.012,
+    image: "https://images.unsplash.com/photo-1607004468138-e7e23ea26947?auto=format&fit=crop&q=80&w=400",
+    category: "Supplements",
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1565071559227-20451284a65e?q=80&w=2940&auto=format&fit=crop',
-    category: 'Supplements',
-    tag: 'Best Seller'
   },
   {
-    id: '2',
-    name: 'Turmeric Latte Mix',
-    description: 'Anti-inflammatory golden milk powder blend',
-    price: 19.99,
+    id: 2,
+    name: "Organic Ashwagandha Powder",
+    description: "Pure & organic stress-relief adaptogen",
+    price: 0.008,
+    image: "https://images.unsplash.com/photo-1617975850214-347b3c24fae3?auto=format&fit=crop&q=80&w=400",
+    category: "Herbs",
     rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f6?q=80&w=2787&auto=format&fit=crop',
-    category: 'Foods'
   },
   {
-    id: '3',
-    name: 'Amla Berry Extract',
-    description: 'Vitamin C rich immunity booster',
-    price: 24.99,
-    rating: 4.5,
-    image: 'https://images.unsplash.com/photo-1543362906-acfc16c67564?q=80&w=2301&auto=format&fit=crop',
-    category: 'Supplements',
-    tag: 'New'
-  },
-  {
-    id: '4',
-    name: 'Meditation Cushion Set',
-    description: 'Ergonomic cushion for proper meditation posture',
-    price: 59.99,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=2940&auto=format&fit=crop',
-    category: 'Lifestyle'
-  },
-  {
-    id: '5',
-    name: 'Ayurvedic Face Oil',
-    description: 'Balancing facial oil with neem and turmeric',
-    price: 34.99,
+    id: 3,
+    name: "Ayurvedic Sleep Formula",
+    description: "Herbal blend for restful sleep and relaxation",
+    price: 0.015,
+    image: "https://images.unsplash.com/photo-1611071638866-0239f4ca5ef3?auto=format&fit=crop&q=80&w=400",
+    category: "Wellness",
     rating: 4.6,
-    image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=2942&auto=format&fit=crop',
-    category: 'Skincare'
   },
   {
-    id: '6',
-    name: 'Triphala Supplement',
-    description: 'Digestive health and detoxification support',
-    price: 22.99,
-    rating: 4.4,
-    image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2940&auto=format&fit=crop',
-    category: 'Supplements'
+    id: 4,
+    name: "Natural Joint Support",
+    description: "Herbal formula for joint health and mobility",
+    price: 0.022,
+    image: "https://images.unsplash.com/photo-1515364229230-3be77501e97e?auto=format&fit=crop&q=80&w=400",
+    category: "Healthcare",
+    rating: 4.5,
+  },
+  {
+    id: 5,
+    name: "Ayurvedic Skin Glow Oil",
+    description: "Natural face oil for radiant, healthy skin",
+    price: 0.018,
+    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=400",
+    category: "Beauty",
+    rating: 4.9,
+  },
+  {
+    id: 6,
+    name: "Herbal Digestive Support",
+    description: "Ayurvedic blend for optimal digestion",
+    price: 0.014,
+    image: "https://images.unsplash.com/photo-1563432088968-7a75e4bdb8dc?auto=format&fit=crop&q=80&w=400",
+    category: "Digestive",
+    rating: 4.7,
   },
 ];
 
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
-  return (
-    <div 
-      className="product-card relative overflow-hidden h-full flex flex-col"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      data-animate="scale"
-    >
-      {product.tag && (
-        <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-medium ${
-          product.tag === 'Best Seller' 
-            ? 'bg-health-amber text-black'
-            : 'bg-health-blue text-white'
-        }`}>
-          {product.tag}
-        </div>
-      )}
-      
-      <div className="relative h-48 md:h-56 rounded-2xl overflow-hidden">
-        <img 
-          src={product.image} 
-          alt={product.name} 
-          className={`w-full h-full object-cover transition-transform duration-500 ${
-            isHovered ? 'scale-110' : 'scale-100'
-          }`}
-        />
-        <div className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
-          isHovered ? 'opacity-100' : 'opacity-0'
-        }`}>
-          <div className="absolute top-4 right-4 flex flex-col gap-2">
-            <button className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
-              <Heart size={16} />
-            </button>
-            <button className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
-              <ShoppingCart size={16} />
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div className="flex-1 pt-4 flex flex-col">
-        <div className="text-sm text-muted-foreground mb-1">{product.category}</div>
-        <h3 className="font-medium text-lg mb-1">{product.name}</h3>
-        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{product.description}</p>
-        
-        <div className="flex items-center gap-1 mb-4">
-          {[...Array(5)].map((_, i) => (
-            <Star 
-              key={i} 
-              size={14} 
-              className={i < Math.floor(product.rating) ? "text-health-amber fill-health-amber" : "text-muted"}
-            />
-          ))}
-          <span className="text-xs text-muted-foreground ml-1">{product.rating}</span>
-        </div>
-        
-        <div className="mt-auto flex justify-between items-center">
-          <div className="font-bold text-lg">${product.price}</div>
-          <button className="btn-primary py-2 px-4">Add to Cart</button>
-        </div>
-      </div>
-    </div>
-  );
-};
+type SortOption = 'price-asc' | 'price-desc' | 'rating-desc' | '';
+type FilterCategory = string | null;
 
-const ProductGrid: React.FC = () => {
-  const categories = ['All', 'Supplements', 'Foods', 'Skincare', 'Lifestyle'];
-  const [activeCategory, setActiveCategory] = useState('All');
+const ProductGrid = () => {
+  const [sortBy, setSortBy] = useState<SortOption>('');
+  const [filterCategory, setFilterCategory] = useState<FilterCategory>(null);
+  const [cart, setCart] = useState<number[]>([]);
   
-  const filteredProducts = activeCategory === 'All' 
-    ? products 
-    : products.filter(product => product.category === activeCategory);
+  // Get all unique categories
+  const categories = Array.from(new Set(products.map(product => product.category)));
+  
+  // Filter and sort products
+  const filteredProducts = products
+    .filter(product => !filterCategory || product.category === filterCategory)
+    .sort((a, b) => {
+      if (sortBy === 'price-asc') return a.price - b.price;
+      if (sortBy === 'price-desc') return b.price - a.price;
+      if (sortBy === 'rating-desc') return b.rating - a.rating;
+      return 0;
+    });
+    
+  const addToCart = (productId: number) => {
+    setCart([...cart, productId]);
+  };
   
   return (
-    <section className="section-padding bg-muted/30 dark:bg-zinc-900/50" id="products">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-4 py-2 rounded-full bg-health-amber/10 text-health-amber text-sm font-medium mb-4">
+    <section id="products" className="py-16 bg-background">
+      <div className="container px-4 md:px-6">
+        <div className="flex flex-col items-center text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
             Personalized Products
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ayurvedic <span className="text-gradient">Essentials</span> For You
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Discover premium quality Ayurvedic products tailored to your specific health needs,
-            curated by our AI based on your unique constitution.
+          <p className="text-muted-foreground max-w-[700px] mb-8">
+            Discover Ayurvedic products tailored to your unique health profile
           </p>
-        </div>
-        
-        <div className="mb-8">
-          <div className="flex justify-between items-center flex-wrap gap-4">
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
-                    activeCategory === category
-                      ? 'bg-primary text-white'
-                      : 'bg-white dark:bg-zinc-800 text-foreground hover:bg-muted'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
+          
+          {/* Filters and sort options */}
+          <div className="w-full flex flex-wrap gap-4 mb-8 justify-center">
+            <div className="flex items-center space-x-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <select 
+                className="bg-background border rounded-md px-3 py-1 text-sm"
+                value={filterCategory || ''}
+                onChange={(e) => setFilterCategory(e.target.value || null)}
+              >
+                <option value="">All Categories</option>
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
             </div>
             
-            <div className="flex gap-2">
-              <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="Search products..." 
-                  className="pl-10 pr-4 py-2 rounded-full bg-white dark:bg-zinc-800 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              </div>
-              <button className="p-2.5 rounded-full bg-white dark:bg-zinc-800 text-foreground hover:bg-muted transition-colors">
-                <Filter size={18} />
-              </button>
+            <div className="flex items-center space-x-2">
+              <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+              <select 
+                className="bg-background border rounded-md px-3 py-1 text-sm"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+              >
+                <option value="">Sort By</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating-desc">Top Rated</option>
+              </select>
             </div>
+
+            {cart.length > 0 && (
+              <div className="flex items-center space-x-2 ml-auto">
+                <ShoppingCart className="h-4 w-4" />
+                <span className="text-sm font-medium">{cart.length} items</span>
+              </div>
+            )}
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="group relative bg-card rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+              <div className="relative pb-[56.25%] bg-muted overflow-hidden">
+                <img 
+                  src={product.image} 
+                  alt={product.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                
+                {/* Quick action buttons */}
+                <div className="absolute top-3 right-3 flex flex-col gap-2">
+                  <button className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+                    <Heart className="h-4 w-4" />
+                  </button>
+                  <button className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+                    <Eye className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="p-5">
+                <h3 className="font-semibold text-lg mb-2 line-clamp-1">{product.name}</h3>
+                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{product.description}</p>
+                
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <span className="text-lg font-bold">{product.price} ETH</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-amber-500">★</span>
+                    <span className="ml-1 text-sm">{product.rating}</span>
+                  </div>
+                </div>
+                
+                <Button 
+                  className="w-full"
+                  onClick={() => addToCart(product.id)}
+                  disabled={cart.includes(product.id)}
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  {cart.includes(product.id) ? 'Added to Cart' : 'Add to Cart'}
+                </Button>
+              </div>
+            </div>
           ))}
-        </div>
-        
-        <div className="text-center mt-12">
-          <a href="#" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors">
-            View All Products
-            <ArrowRight size={18} />
-          </a>
         </div>
       </div>
     </section>

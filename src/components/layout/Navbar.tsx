@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, Wallet } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -30,6 +30,7 @@ const Navbar: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   // Handle scroll effect
   useEffect(() => {
@@ -45,10 +46,55 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Check if wallet is already connected
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
+
   // Handle dark mode toggle
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
+  };
+
+  // MetaMask connection functions
+  const checkIfWalletIsConnected = async () => {
+    try {
+      const { ethereum } = window as any;
+      if (!ethereum) {
+        console.log("Make sure you have MetaMask installed!");
+        return;
+      }
+
+      // Check if we're authorized to access the user's wallet
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+      if (accounts.length !== 0) {
+        const account = accounts[0];
+        setWalletAddress(account);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window as any;
+      if (!ethereum) {
+        alert("Get MetaMask!");
+        return;
+      }
+
+      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+      setWalletAddress(accounts[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Format wallet address for display
+  const formatWalletAddress = (address: string) => {
+    return address.slice(0, 6) + '...' + address.slice(-4);
   };
 
   return (
@@ -101,6 +147,18 @@ const Navbar: React.FC = () => {
 
         {/* Right side actions */}
         <div className="flex items-center gap-4">
+          {/* MetaMask Wallet Connection */}
+          <button
+            onClick={walletAddress ? undefined : connectWallet}
+            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm bg-muted hover:bg-muted/80 transition-colors"
+            title={walletAddress || "Connect MetaMask"}
+          >
+            <Wallet className="h-4 w-4" />
+            <span className="max-w-[100px] truncate">
+              {walletAddress ? formatWalletAddress(walletAddress) : "Connect Wallet"}
+            </span>
+          </button>
+          
           <button 
             onClick={toggleDarkMode}
             className="w-10 h-10 rounded-full flex items-center justify-center bg-muted hover:bg-muted/80 transition-colors"
@@ -168,6 +226,17 @@ const Navbar: React.FC = () => {
               )}
             </div>
           ))}
+          
+          {/* Mobile Wallet Connection */}
+          <button
+            onClick={walletAddress ? undefined : connectWallet}
+            className="flex items-center gap-2 py-3 px-4 text-lg font-medium text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
+          >
+            <Wallet className="h-5 w-5" />
+            <span>
+              {walletAddress ? formatWalletAddress(walletAddress) : "Connect Wallet"}
+            </span>
+          </button>
           
           <a
             href="#get-started"

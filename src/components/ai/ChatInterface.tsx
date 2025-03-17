@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Mic, Plus, Bot, User } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import MedicalReportUpload from './MedicalReportUpload';
 
 interface Message {
   id: string;
@@ -68,6 +69,32 @@ const ChatInterface: React.FC = () => {
     }, 1500);
   };
 
+  const handleReportAnalysis = (analysis: string) => {
+    // Add a system message about the upload
+    const uploadMessage: Message = {
+      id: Date.now().toString(),
+      text: "Medical report uploaded for analysis...",
+      sender: 'user',
+      timestamp: new Date(),
+    };
+    
+    setMessages(prev => [...prev, uploadMessage]);
+    setIsTyping(true);
+    
+    // Simulate AI processing and response
+    setTimeout(() => {
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: analysis,
+        sender: 'ai',
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, aiResponse]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
   const getAIResponse = (userInput: string): string => {
     // Simple simulation of AI responses
     const lowercaseInput = userInput.toLowerCase();
@@ -117,14 +144,17 @@ const ChatInterface: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-xl overflow-hidden">
             {/* Chat header */}
-            <div className="bg-primary text-primary-foreground px-6 py-4 flex items-center">
-              <div className="p-2 rounded-full bg-white/20 mr-3">
-                <Bot size={20} />
+            <div className="bg-primary text-primary-foreground px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="p-2 rounded-full bg-white/20 mr-3">
+                  <Bot size={20} />
+                </div>
+                <div>
+                  <h3 className="font-medium">AyurAI Health Assistant</h3>
+                  <p className="text-sm text-primary-foreground/80">Always online</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium">AyurAI Health Assistant</h3>
-                <p className="text-sm text-primary-foreground/80">Always online</p>
-              </div>
+              <MedicalReportUpload onAnalysisComplete={handleReportAnalysis} />
             </div>
             
             {/* Messages container */}

@@ -1,14 +1,25 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, Plus, Bot, User } from 'lucide-react';
+import { Send, Mic, Plus, Bot, User, ShoppingCart } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import MedicalReportUpload from './MedicalReportUpload';
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 interface Message {
   id: string;
   text: string;
   sender: 'user' | 'ai';
   timestamp: Date;
+}
+
+interface Medicine {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
 }
 
 const ChatInterface: React.FC = () => {
@@ -22,8 +33,11 @@ const ChatInterface: React.FC = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [recommendedMedicines, setRecommendedMedicines] = useState<Medicine[]>([]);
+  const [cartCount, setCartCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const suggestedQuestions = [
     "What's my health status today?",
@@ -39,6 +53,15 @@ const ChatInterface: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Load cart count on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      const cartItems = JSON.parse(savedCart);
+      setCartCount(cartItems.length);
+    }
+  }, []);
 
   const handleSendMessage = () => {
     if (!inputText.trim()) return;
@@ -80,6 +103,43 @@ const ChatInterface: React.FC = () => {
     
     setMessages(prev => [...prev, uploadMessage]);
     setIsTyping(true);
+    
+    // Extract recommended medicines from the analysis
+    if (analysis.includes("Recommended Medicines:")) {
+      // Create sample medicine data
+      const medicines: Medicine[] = [
+        {
+          id: 101,
+          name: "Omega-3 Fish Oil Capsules",
+          description: "1000mg - Take 1 daily with meal",
+          price: 0.008,
+          image: "https://images.unsplash.com/photo-1584308572733-34ba083c3a06?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 102,
+          name: "Vitamin D3",
+          description: "2000 IU - Take 1 daily with breakfast",
+          price: 0.006,
+          image: "https://images.unsplash.com/photo-1577344718665-3e7c0c1ecf6b?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 103,
+          name: "Plant Sterols Complex",
+          description: "For cholesterol management",
+          price: 0.012,
+          image: "https://images.unsplash.com/photo-1550572017-69b12867229f?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 104,
+          name: "CoQ10",
+          description: "100mg - Support heart health",
+          price: 0.015,
+          image: "https://images.unsplash.com/photo-1619566758708-3b8aac3274e6?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+      
+      setRecommendedMedicines(medicines);
+    }
     
     // Simulate AI processing and response
     setTimeout(() => {
@@ -126,6 +186,35 @@ const ChatInterface: React.FC = () => {
     }
   };
 
+  const addToCart = (medicine: Medicine) => {
+    // Get existing cart
+    const savedCart = localStorage.getItem('cart');
+    const cartItems = savedCart ? JSON.parse(savedCart) : [];
+    
+    // Check if item already exists
+    const existingItemIndex = cartItems.findIndex((item: any) => item.id === medicine.id);
+    
+    if (existingItemIndex !== -1) {
+      // Item exists, increase quantity
+      cartItems[existingItemIndex].quantity += 1;
+    } else {
+      // Item doesn't exist, add it
+      cartItems.push({
+        ...medicine,
+        quantity: 1
+      });
+    }
+    
+    // Save back to localStorage
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    setCartCount(cartItems.length);
+    
+    toast({
+      title: "Added to cart",
+      description: `${medicine.name} has been added to your cart`,
+    });
+  };
+
   return (
     <section className="section-padding bg-background" id="assistant">
       <div className="max-w-7xl mx-auto">
@@ -154,7 +243,20 @@ const ChatInterface: React.FC = () => {
                   <p className="text-sm text-primary-foreground/80">Always online</p>
                 </div>
               </div>
-              <MedicalReportUpload onAnalysisComplete={handleReportAnalysis} />
+              <div className="flex items-center gap-3">
+                <MedicalReportUpload onAnalysisComplete={handleReportAnalysis} />
+                
+                <Link to="/cart">
+                  <Button variant="outline" className="bg-white/20 hover:bg-white/30 text-primary-foreground border-white/20 relative">
+                    <ShoppingCart size={18} />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Button>
+                </Link>
+              </div>
             </div>
             
             {/* Messages container */}
@@ -203,6 +305,39 @@ const ChatInterface: React.FC = () => {
                   </div>
                 </div>
               ))}
+              
+              {/* Recommended Medicines Section */}
+              {recommendedMedicines.length > 0 && (
+                <div className="max-w-full mr-auto mb-6 bg-background dark:bg-zinc-800 rounded-xl shadow-sm p-4">
+                  <h3 className="font-medium mb-3">Recommended Medicines Based on Your Report</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {recommendedMedicines.map(medicine => (
+                      <div key={medicine.id} className="flex border rounded-lg overflow-hidden bg-card">
+                        <div className="w-16 h-16 bg-muted flex-shrink-0">
+                          <img src={medicine.image} alt={medicine.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="p-2 flex-1 flex flex-col justify-between">
+                          <div>
+                            <h4 className="text-sm font-medium line-clamp-1">{medicine.name}</h4>
+                            <p className="text-xs text-muted-foreground line-clamp-1">{medicine.description}</p>
+                          </div>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-xs font-semibold">{medicine.price} ETH</span>
+                            <Button 
+                              variant="secondary" 
+                              size="sm" 
+                              className="h-7 text-xs px-2"
+                              onClick={() => addToCart(medicine)}
+                            >
+                              Add to Cart
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               {isTyping && (
                 <div className="max-w-[85%] mr-auto mb-4">

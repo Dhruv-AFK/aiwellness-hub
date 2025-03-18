@@ -55,7 +55,7 @@ const MedicalReportUpload: React.FC<ReportUploadProps> = ({ onAnalysisComplete }
       setIsUploading(false);
       setDialogOpen(false);
       
-      // Simulate AI analysis result
+      // Simulate AI analysis result with medicine recommendations
       const analysisResult = `Based on your uploaded medical report, I notice your cholesterol levels are slightly elevated (LDL: 142 mg/dL). Your blood pressure readings are within normal range, but your vitamin D levels are low at 18 ng/mL.
 
 Recommendations:
@@ -64,7 +64,13 @@ Recommendations:
 3. Increase intake of foods rich in soluble fiber (oats, beans, fruits)
 4. Continue your current exercise regimen which shows positive impact on your metabolic markers
 
-Would you like a more detailed explanation of how these recommendations address the specific findings in your report?`;
+Recommended Medicines:
+- Omega-3 Fish Oil Capsules (1000mg) - Take 1 daily with meal
+- Vitamin D3 (2000 IU) - Take 1 daily with breakfast
+- Plant Sterols Complex - Take as directed for cholesterol management
+- CoQ10 (100mg) - Optional supplement to support heart health
+
+Would you like me to add any of these items to your cart?`;
       
       onAnalysisComplete(analysisResult);
     }, 3000);
@@ -74,8 +80,8 @@ Would you like a more detailed explanation of how these recommendations address 
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button 
-          variant="outline" 
-          className="flex items-center gap-2 bg-background hover:bg-primary/10 border-dashed border-primary/40"
+          variant="default" 
+          className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <FileUp size={18} />
           <span>Upload Medical Report</span>

@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, Wallet, ShoppingCart } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, Wallet, ShoppingCart, HandCoins } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Link } from 'react-router-dom';
 
@@ -158,6 +159,14 @@ const Navbar: React.FC = () => {
 
         <div className="flex items-center gap-4">
           <Link
+            to="/fundraise"
+            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
+          >
+            <HandCoins className="h-4 w-4" />
+            <span>Fundraise</span>
+          </Link>
+          
+          <Link
             to="/cart"
             className="relative w-10 h-10 rounded-full flex items-center justify-center bg-muted hover:bg-muted/80 transition-colors"
             aria-label="View cart"
@@ -247,6 +256,15 @@ const Navbar: React.FC = () => {
               )}
             </div>
           ))}
+          
+          <Link
+            to="/fundraise"
+            className="flex items-center gap-2 py-3 px-4 text-lg font-medium text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
+            onClick={() => setIsOpen(false)}
+          >
+            <HandCoins className="h-5 w-5" />
+            <span>Fundraise</span>
+          </Link>
           
           <button
             onClick={walletAddress ? undefined : connectWallet}

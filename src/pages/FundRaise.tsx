@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { HandCoins, HeartHandshake, FileText, ShieldCheck, BadgeCheck } from 'lucide-react';
@@ -8,9 +8,19 @@ import Footer from '@/components/layout/Footer';
 import FundRequest from '@/components/fundraise/FundRequest';
 import FundRequestForm from '@/components/fundraise/FundRequestForm';
 import { toast } from 'sonner';
+import { useLocation } from 'react-router-dom';
 
 const FundRaise = () => {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("browse");
+  
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const tabParam = searchParams.get('tab');
+    if (tabParam === 'create') {
+      setActiveTab('create');
+    }
+  }, [location]);
   
   return (
     <div className="min-h-screen bg-background">
@@ -119,7 +129,6 @@ const FundRaise = () => {
     setActiveTab("browse");
   }
 
-  // Simulate MetaMask transaction
   function simulateMetaMaskTransaction(): Promise<void> {
     return new Promise((resolve, reject) => {
       // Show a mock dialog that looks like MetaMask
@@ -136,7 +145,6 @@ const FundRaise = () => {
   }
 };
 
-// Mock data for fund requests
 const fundRequests = [
   {
     id: "fr1",

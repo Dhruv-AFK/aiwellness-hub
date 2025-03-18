@@ -8,6 +8,7 @@ import HealthDashboard from '@/components/health/HealthDashboard';
 import WatchConnect from '@/components/health/WatchConnect';
 import ProductGrid from '@/components/ecommerce/ProductGrid';
 import DoctorsList from '@/components/doctors/DoctorsList';
+import FundraisePreview from '@/components/fundraise/FundraisePreview';
 import Footer from '@/components/layout/Footer';
 
 const Index = () => {
@@ -47,6 +48,7 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <FundraisePreview />
         <FeaturesSection />
         <HealthDashboard />
         <WatchConnect />

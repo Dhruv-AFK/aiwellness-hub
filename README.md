@@ -1,69 +1,76 @@
-# Welcome to your Lovable project
+🌿 AI Wellness Hub – Decentralized Health & Telemedicine on EDU Chain
+AI Wellness Hub is a Web3-powered health ecosystem that integrates blockchain, AI, and decentralized crowdfunding to make healthcare more accessible, transparent, and affordable.
 
-## Project info
+🌍 Built on EDU Chain, this platform allows users to:
+✅ Raise wellness funds via decentralized crowdfunding (TVL growth)
+✅ Book doctor consultations & pay via EDU tokens
+✅ Verify consultations using AI to prevent fraud
+✅ Own & control health data on-chain
 
-**URL**: https://lovable.dev/projects/af7d1ffb-b6a7-4711-946c-60a7f522320f
+🚀 Key Features
+1️⃣ Wellness Crowdfunding (TVL Growth)
+💰 Users can stake or donate EDU tokens to a Wellness Fund Smart Contract.
+🔗 Funds are securely stored on EDU Chain & distributed via AI verification.
+🌟 Increases EDU Chain adoption & Total Value Locked (TVL).
 
-## How can I edit this code?
+2️⃣ Decentralized Doctor Payments (Web3 Telehealth)
+🩺 Web3-powered doctor consultations – no middlemen, direct payments.
+🔗 Patients pay 5 EDU tokens to book an appointment.
+✅ Funds are released only after AI verifies the consultation.
 
-There are several ways of editing your application.
+3️⃣ AI-Powered Health Verification
+🤖 AI checks telehealth records before releasing payments.
+🔗 Prevents fraud & ensures verified medical transactions.
 
-**Use Lovable**
+4️⃣ Smart Contract Integration
+🛠 Built with Solidity & Hardhat for secure fund management.
+📡 MetaMask & EDU Wallet support for seamless transactions.
+🔍 EDU Chain Explorer Integration to track fund movement.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/af7d1ffb-b6a7-4711-946c-60a7f522320f) and start prompting.
+📌 Tech Stack
+Technology	Usage
+Solidity	Smart contracts for crowdfunding & doctor payments
+Hardhat	Contract deployment & testing
+Ethers.js	Web3 integration & EDU Chain transactions
+React.js	User-friendly & interactive frontend
+MetaMask	Wallet authentication for blockchain transactions
+Remix IDE	Quick contract deployment & testing
+🔧 How to Run Locally
+1️⃣ Clone this repository:
 
-Changes made via Lovable will be committed automatically to this repo.
+bash
+Copy
+Edit
+git clone https://github.com/your-username/ai-wellness-hub.git
+cd ai-wellness-hub
+2️⃣ Install dependencies:
 
-**Use your preferred IDE**
+bash
+Copy
+Edit
+npm install
+3️⃣ Start the development server:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+bash
+Copy
+Edit
 npm run dev
-```
+4️⃣ Deploy Smart Contracts (Optional, for blockchain integration):
 
-**Edit a file directly in GitHub**
+bash
+Copy
+Edit
+npx hardhat run scripts/deploy.js --network edu
+🎯 Future Roadmap
+🔹 Insurance-backed Health NFTs – AI-generated fitness achievements stored as NFTs.
+🔹 Cross-Chain Telehealth Payments – Expand to Polygon, BNB Chain & Ethereum.
+🔹 Decentralized Medical Records – Patients own & control their medical history.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+📜 Smart Contract Address (Deployed on EDU Chain)
+📌 Contract Address: 0xYourContractAddressHere
+🔍 View on EDU Chain Explorer: Explorer Link
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/af7d1ffb-b6a7-4711-946c-60a7f522320f) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+🌟 Show Your Support!
+💙 If you like this project, don’t forget to star ⭐ the repo!
+🔁 Fork & contribute to improve healthcare with Web3!
+🚀 Follow us on Twitter for updates!

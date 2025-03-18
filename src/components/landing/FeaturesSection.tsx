@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Stethoscope, Brain, ShoppingBag, Video, Bot, Shield } from 'lucide-react';
 
 interface FeatureCardProps {
@@ -9,23 +9,72 @@ interface FeatureCardProps {
   delay: number;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, delay }) => (
-  <div 
-    className="health-card h-full flex flex-col items-start"
-    style={{ 
-      animationDelay: `${delay * 0.1}s`,
-    }}
-    data-animate="slide-up"
-  >
-    <div className="p-3 rounded-xl bg-primary/10 text-primary mb-4">
-      {icon}
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, delay }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('animate-show');
+            }, delay * 100);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+    
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, [delay]);
+  
+  return (
+    <div 
+      ref={cardRef}
+      className="health-card h-full flex flex-col items-start transition-all duration-500 opacity-0 translate-y-10 hover:scale-105"
+      style={{ 
+        transitionDelay: `${delay * 0.1}s`,
+      }}
+    >
+      <div className="p-3 rounded-xl bg-primary/10 text-primary mb-4 transition-transform duration-300 hover:scale-110">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
     </div>
-    <h3 className="text-xl font-bold mb-2">{title}</h3>
-    <p className="text-muted-foreground">{description}</p>
-  </div>
-);
+  );
+};
 
 const FeaturesSection: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  useEffect(() => {
+    const features = document.querySelectorAll('.health-card');
+    
+    // Add animation styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .animate-show {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+  
   const features = [
     {
       icon: <Stethoscope size={24} />,
@@ -60,16 +109,16 @@ const FeaturesSection: React.FC = () => {
   ];
 
   return (
-    <section className="section-padding bg-muted/30 dark:bg-zinc-900/50" id="services">
+    <section ref={sectionRef} className="section-padding bg-muted/30 dark:bg-zinc-900/50" id="services">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-4 py-2 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-4">
+          <div className="inline-block px-4 py-2 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-4 animate-fade-in">
             Our Services
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             Holistic Healthcare <span className="text-gradient">Reimagined</span> With AI
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground animate-fade-in" style={{ animationDelay: '0.3s' }}>
             Experience the perfect blend of ancient wisdom and modern technology,
             designed to provide personalized healthcare solutions for your well-being.
           </p>

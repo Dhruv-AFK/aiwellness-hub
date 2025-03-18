@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingCart, Trash2, ArrowRight, AlertCircle } from 'lucide-react';
@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useToast } from "@/hooks/use-toast";
+import { Link } from 'react-router-dom';
 
 interface CartItem {
   id: number;
@@ -19,15 +20,22 @@ interface CartItem {
 
 const Cart = () => {
   // Get cart items from localStorage or use empty array
-  const savedCart = localStorage.getItem('cart');
-  const initialCart: CartItem[] = savedCart ? JSON.parse(savedCart) : [];
-  
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialCart);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
   
+  // Load cart items from localStorage
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    const initialCart: CartItem[] = savedCart ? JSON.parse(savedCart) : [];
+    setCartItems(initialCart);
+  }, []);
+  
   const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity <= 0) return;
+    if (newQuantity <= 0) {
+      removeItem(id);
+      return;
+    }
     
     const updatedCart = cartItems.map(item => 
       item.id === id ? { ...item, quantity: newQuantity } : item
@@ -35,6 +43,9 @@ const Cart = () => {
     
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+    
+    // Dispatch a custom event to notify other components
+    window.dispatchEvent(new Event('cartUpdated'));
   };
   
   const removeItem = (id: number) => {
@@ -42,9 +53,25 @@ const Cart = () => {
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     
+    // Dispatch a custom event to notify other components
+    window.dispatchEvent(new Event('cartUpdated'));
+    
     toast({
       title: "Item removed",
       description: "Item has been removed from your cart.",
+    });
+  };
+  
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cart');
+    
+    // Dispatch a custom event to notify other components
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    toast({
+      title: "Cart cleared",
+      description: "All items have been removed from your cart.",
     });
   };
   
@@ -101,6 +128,9 @@ const Cart = () => {
       setCartItems([]);
       localStorage.removeItem('cart');
       
+      // Dispatch a custom event to notify other components
+      window.dispatchEvent(new Event('cartUpdated'));
+      
     } catch (error) {
       console.error("Transaction failed:", error);
       toast({
@@ -114,7 +144,7 @@ const Cart = () => {
   };
 
   // Scroll to top when component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   
@@ -138,9 +168,11 @@ const Cart = () => {
                   <p className="text-muted-foreground mb-4">
                     Browse our products and add items to your cart.
                   </p>
-                  <Button onClick={() => window.location.href = '/#products'}>
-                    Continue Shopping
-                  </Button>
+                  <Link to="/#products">
+                    <Button>
+                      Continue Shopping
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -148,10 +180,21 @@ const Cart = () => {
             <div className="grid gap-8 md:grid-cols-[1fr_350px]">
               <div>
                 <Card>
-                  <CardHeader>
-                    <CardTitle>Items ({cartItems.length})</CardTitle>
-                    <CardDescription>Review your items before checkout</CardDescription>
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                      <CardTitle>Items ({cartItems.length})</CardTitle>
+                      <CardDescription>Review your items before checkout</CardDescription>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={clearCart}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      Clear Cart
+                    </Button>
                   </CardHeader>
+                  
                   <CardContent className="p-0">
                     <ul className="divide-y">
                       {cartItems.map((item) => (
@@ -192,7 +235,7 @@ const Cart = () => {
                               <Button 
                                 variant="ghost" 
                                 size="sm" 
-                                className="text-muted-foreground"
+                                className="text-muted-foreground hover:text-destructive"
                                 onClick={() => removeItem(item.id)}
                               >
                                 <Trash2 className="h-4 w-4" />
@@ -201,7 +244,7 @@ const Cart = () => {
                           </div>
                           
                           <div className="text-right font-medium">
-                            {item.price.toFixed(3)} ETH
+                            {item.price.toFixed(3)} EDU
                           </div>
                         </li>
                       ))}
@@ -218,20 +261,20 @@ const Cart = () => {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span>{calculateTotal().toFixed(3)} ETH</span>
+                      <span>{calculateTotal().toFixed(3)} EDU</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Gas Fees (estimated)</span>
-                      <span>0.001 ETH</span>
+                      <span>0.001 EDU</span>
                     </div>
                     <div className="border-t pt-4 flex justify-between font-bold">
                       <span>Total</span>
-                      <span>{(calculateTotal() + 0.001).toFixed(3)} ETH</span>
+                      <span>{(calculateTotal() + 0.001).toFixed(3)} EDU</span>
                     </div>
                   </CardContent>
                   <CardFooter className="flex flex-col gap-4">
                     <Button 
-                      className="w-full flex items-center gap-2" 
+                      className="w-full flex items-center gap-2 animate-pulse" 
                       size="lg"
                       onClick={handleMetaMaskCheckout}
                       disabled={isProcessing}

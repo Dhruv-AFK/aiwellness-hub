@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Heart, Filter, Eye, ArrowUpDown } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from 'react-router-dom';
 
 // Example product data
 const products = [
@@ -68,6 +70,8 @@ const ProductGrid = () => {
   const [sortBy, setSortBy] = useState<SortOption>('');
   const [filterCategory, setFilterCategory] = useState<FilterCategory>(null);
   const [cart, setCart] = useState<number[]>([]);
+  const { toast } = useToast();
+  const navigate = useNavigate();
   
   // Get all unique categories
   const categories = Array.from(new Set(products.map(product => product.category)));
@@ -83,7 +87,55 @@ const ProductGrid = () => {
     });
     
   const addToCart = (productId: number) => {
+    // Get the product data
+    const productToAdd = products.find(p => p.id === productId);
+    if (!productToAdd) return;
+    
+    // Get current cart from localStorage
+    const savedCart = localStorage.getItem('cart');
+    const currentCart = savedCart ? JSON.parse(savedCart) : [];
+    
+    // Check if product already exists
+    const existingItemIndex = currentCart.findIndex((item: any) => item.id === productId);
+    
+    let updatedCart;
+    if (existingItemIndex >= 0) {
+      // Update quantity if item exists
+      updatedCart = [...currentCart];
+      updatedCart[existingItemIndex].quantity += 1;
+    } else {
+      // Add new item with quantity 1
+      updatedCart = [
+        ...currentCart, 
+        {
+          id: productToAdd.id,
+          name: productToAdd.name,
+          price: productToAdd.price,
+          image: productToAdd.image,
+          description: productToAdd.description,
+          quantity: 1
+        }
+      ];
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    
+    // Update local state
     setCart([...cart, productId]);
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    // Show toast notification
+    toast({
+      title: "Added to cart",
+      description: `${productToAdd.name} has been added to your cart.`,
+    });
+  };
+  
+  const viewCart = () => {
+    navigate('/cart');
   };
   
   return (
@@ -129,8 +181,10 @@ const ProductGrid = () => {
 
             {cart.length > 0 && (
               <div className="flex items-center space-x-2 ml-auto">
-                <ShoppingCart className="h-4 w-4" />
-                <span className="text-sm font-medium">{cart.length} items</span>
+                <Button variant="outline" size="sm" onClick={viewCart}>
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  <span className="text-sm font-medium">{cart.length} items</span>
+                </Button>
               </div>
             )}
           </div>
@@ -164,7 +218,7 @@ const ProductGrid = () => {
                 
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
-                    <span className="text-lg font-bold">{product.price} ETH</span>
+                    <span className="text-lg font-bold">{product.price} EDU</span>
                   </div>
                   <div className="flex items-center">
                     <span className="text-amber-500">★</span>

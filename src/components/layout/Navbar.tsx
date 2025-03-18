@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, Wallet } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, Wallet, ShoppingCart } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { Link } from 'react-router-dom';
 
 interface NavItem {
   label: string;
@@ -31,8 +31,8 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [cartItemsCount, setCartItemsCount] = useState(0);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -46,18 +46,33 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Check if wallet is already connected
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
 
-  // Handle dark mode toggle
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = localStorage.getItem('cart');
+      const cartItems = cart ? JSON.parse(cart) : [];
+      setCartItemsCount(cartItems.length);
+    };
+    
+    updateCartCount();
+    
+    window.addEventListener('storage', updateCartCount);
+    window.addEventListener('cartUpdated', updateCartCount);
+    
+    return () => {
+      window.removeEventListener('storage', updateCartCount);
+      window.removeEventListener('cartUpdated', updateCartCount);
+    };
+  }, []);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
   };
 
-  // MetaMask connection functions
   const checkIfWalletIsConnected = async () => {
     try {
       const { ethereum } = window as any;
@@ -66,7 +81,6 @@ const Navbar: React.FC = () => {
         return;
       }
 
-      // Check if we're authorized to access the user's wallet
       const accounts = await ethereum.request({ method: "eth_accounts" });
       if (accounts.length !== 0) {
         const account = accounts[0];
@@ -92,7 +106,6 @@ const Navbar: React.FC = () => {
     }
   };
 
-  // Format wallet address for display
   const formatWalletAddress = (address: string) => {
     return address.slice(0, 6) + '...' + address.slice(-4);
   };
@@ -105,7 +118,6 @@ const Navbar: React.FC = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Logo */}
         <a href="#" className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-health-blue to-health-purple flex items-center justify-center">
             <span className="text-white font-bold text-lg">A</span>
@@ -113,7 +125,6 @@ const Navbar: React.FC = () => {
           <span className="text-xl font-bold text-foreground">AyurAI</span>
         </a>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-1">
           {navItems.map((item) => (
             <div key={item.label} className="relative group">
@@ -145,9 +156,20 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* Right side actions */}
         <div className="flex items-center gap-4">
-          {/* MetaMask Wallet Connection */}
+          <Link
+            to="/cart"
+            className="relative w-10 h-10 rounded-full flex items-center justify-center bg-muted hover:bg-muted/80 transition-colors"
+            aria-label="View cart"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {cartItemsCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-white text-xs flex items-center justify-center">
+                {cartItemsCount}
+              </span>
+            )}
+          </Link>
+          
           <button
             onClick={walletAddress ? undefined : connectWallet}
             className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm bg-muted hover:bg-muted/80 transition-colors"
@@ -181,7 +203,6 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <div
         className={cn(
           "md:hidden fixed inset-0 z-40 bg-white dark:bg-zinc-900 transition-transform duration-300 pt-24 px-6 pb-6",
@@ -227,7 +248,6 @@ const Navbar: React.FC = () => {
             </div>
           ))}
           
-          {/* Mobile Wallet Connection */}
           <button
             onClick={walletAddress ? undefined : connectWallet}
             className="flex items-center gap-2 py-3 px-4 text-lg font-medium text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
@@ -237,6 +257,15 @@ const Navbar: React.FC = () => {
               {walletAddress ? formatWalletAddress(walletAddress) : "Connect Wallet"}
             </span>
           </button>
+          
+          <Link
+            to="/cart"
+            className="flex items-center gap-2 py-3 px-4 text-lg font-medium text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
+            onClick={() => setIsOpen(false)}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <span>Cart {cartItemsCount > 0 && `(${cartItemsCount})`}</span>
+          </Link>
           
           <a
             href="#get-started"

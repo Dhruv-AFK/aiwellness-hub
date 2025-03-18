@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { BadgeCheck, HandCoins, FileMedical } from "lucide-react";
+import { BadgeCheck, HandCoins, FileText } from 'lucide-react';
 
 interface FundRequestProps {
   request: {
@@ -67,7 +67,7 @@ const FundRequest: React.FC<FundRequestProps> = ({ request, onDonate, onViewRepo
           size="sm" 
           className="w-full text-xs"
         >
-          <FileMedical className="mr-1 h-4 w-4" />
+          <FileText className="mr-1 h-4 w-4" />
           View Report
         </Button>
         <Button 

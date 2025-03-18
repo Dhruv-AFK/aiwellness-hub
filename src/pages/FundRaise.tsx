@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { HandCoins, HeartHandshake, FileMedical, ShieldCheck, BadgeCheck } from 'lucide-react';
+import { HandCoins, HeartHandshake, FileText, ShieldCheck, BadgeCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -45,7 +44,7 @@ const FundRaise = () => {
           <Card className="w-full max-w-xs bg-secondary/5 border-secondary/20">
             <CardHeader className="space-y-1 text-center">
               <div className="w-12 h-12 mx-auto bg-secondary/10 rounded-full flex items-center justify-center mb-2">
-                <FileMedical className="h-6 w-6 text-secondary" />
+                <FileText className="h-6 w-6 text-secondary" />
               </div>
               <CardTitle>Verified Reports</CardTitle>
             </CardHeader>

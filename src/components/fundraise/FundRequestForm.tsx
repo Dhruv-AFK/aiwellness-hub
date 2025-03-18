@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { FileMedical, Upload } from 'lucide-react';
+import { FileText, Upload } from 'lucide-react';
 
 const formSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -190,7 +189,7 @@ const FundRequestForm: React.FC<FundRequestFormProps> = ({ onSubmit }) => {
             
             <div className="space-y-2">
               <Label htmlFor="medicalReport" className="flex items-center gap-1">
-                <FileMedical className="h-4 w-4" />
+                <FileText className="h-4 w-4" />
                 Medical Report
               </Label>
               <div className="flex items-center gap-2">
@@ -198,7 +197,7 @@ const FundRequestForm: React.FC<FundRequestFormProps> = ({ onSubmit }) => {
                   id="medicalReport" 
                   type="file" 
                   accept=".pdf,.jpg,.png,.doc,.docx" 
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-secondary/10 border-secondary/20 text-secondary"
                   onChange={handleReportUpload}
                 />
               </div>

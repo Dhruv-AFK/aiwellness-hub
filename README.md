@@ -1,8 +1,8 @@
-# 🌿 AI Wellness Hub – Decentralized Health & Telemedicine on EDU Chain  
+# 🌿 AI Wellness Hub – Decentralized Health & Telemedicine on ETH Chain  
 
 **AI Wellness Hub** is a **Web3-powered health ecosystem** that integrates **blockchain, AI, and decentralized crowdfunding** to make healthcare more **accessible, transparent, and affordable**.  
 
-🌍 **Built on EDU Chain**, this platform allows users to:  
+🌍 **Built on ETH Chain**, this platform allows users to:  
 ✅ **Raise wellness funds** via decentralized **crowdfunding** (TVL growth)  
 ✅ **Book doctor consultations** & pay via **EDU tokens**  
 ✅ **Verify consultations using AI** to prevent fraud  
@@ -13,13 +13,13 @@
 ## 🚀 Key Features  
 
 ### 1️⃣ Wellness Crowdfunding (TVL Growth)  
-💰 Users can stake or donate **EDU tokens** to a **Wellness Fund Smart Contract**.  
-🔗 Funds are **securely stored on EDU Chain** & distributed via AI verification.  
+💰 Users can stake or donate **ETH tokens** to a **Wellness Fund Smart Contract**.  
+🔗 Funds are **securely stored on ETH Chain** & distributed via AI verification.  
 🌟 **Increases EDU Chain adoption & Total Value Locked (TVL).**  
 
 ### 2️⃣ Decentralized Doctor Payments (Web3 Telehealth)  
 🩺 **Web3-powered doctor consultations** – no middlemen, direct payments.  
-🔗 Patients pay **5 EDU tokens** to book an appointment.  
+🔗 Patients pay **5 ETH tokens** to book an appointment.  
 ✅ Funds are released **only after AI verifies the consultation.**  
 
 ### 3️⃣ AI-Powered Health Verification  

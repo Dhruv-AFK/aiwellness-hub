@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, Wallet, ShoppingCart, HandCoins } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, Wallet, ShoppingCart } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Link } from 'react-router-dom';
 
@@ -100,6 +100,38 @@ const Navbar: React.FC = () => {
         return;
       }
 
+      // Request connection to Base Sepolia network
+      try {
+        await ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0x14A34' }], // Base Sepolia chainId in hex
+        });
+      } catch (switchError: any) {
+        // This error code indicates that the chain has not been added to MetaMask
+        if (switchError.code === 4902) {
+          try {
+            await ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: '0x14A34',
+                  chainName: 'Base Sepolia',
+                  nativeCurrency: {
+                    name: 'Sepolia ETH',
+                    symbol: 'ETH',
+                    decimals: 18,
+                  },
+                  rpcUrls: ['https://sepolia.base.org'],
+                  blockExplorerUrls: ['https://sepolia-explorer.base.org'],
+                },
+              ],
+            });
+          } catch (addError) {
+            console.error(addError);
+          }
+        }
+      }
+
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
       setWalletAddress(accounts[0]);
     } catch (error) {
@@ -121,9 +153,9 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-health-blue to-health-purple flex items-center justify-center">
-            <span className="text-white font-bold text-lg">A</span>
+            <span className="text-white font-bold text-lg">M</span>
           </div>
-          <span className="text-xl font-bold text-foreground">AyurAI</span>
+          <span className="text-xl font-bold text-foreground">MedAI</span>
         </a>
 
         <div className="hidden md:flex items-center space-x-1">
@@ -159,14 +191,6 @@ const Navbar: React.FC = () => {
 
         <div className="flex items-center gap-4">
           <Link
-            to="/fundraise"
-            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
-          >
-            <HandCoins className="h-4 w-4" />
-            <span>Fundraise</span>
-          </Link>
-          
-          <Link
             to="/cart"
             className="relative w-10 h-10 rounded-full flex items-center justify-center bg-muted hover:bg-muted/80 transition-colors"
             aria-label="View cart"
@@ -182,7 +206,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={walletAddress ? undefined : connectWallet}
             className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm bg-muted hover:bg-muted/80 transition-colors"
-            title={walletAddress || "Connect MetaMask"}
+            title={walletAddress || "Connect MetaMask to Base Sepolia"}
           >
             <Wallet className="h-4 w-4" />
             <span className="max-w-[100px] truncate">
@@ -256,15 +280,6 @@ const Navbar: React.FC = () => {
               )}
             </div>
           ))}
-          
-          <Link
-            to="/fundraise"
-            className="flex items-center gap-2 py-3 px-4 text-lg font-medium text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
-            onClick={() => setIsOpen(false)}
-          >
-            <HandCoins className="h-5 w-5" />
-            <span>Fundraise</span>
-          </Link>
           
           <button
             onClick={walletAddress ? undefined : connectWallet}

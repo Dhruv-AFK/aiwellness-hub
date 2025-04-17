@@ -41,7 +41,7 @@ const ChatInterface: React.FC = () => {
 
   const suggestedQuestions = [
     "What's my health status today?",
-    "Can you recommend foods for my dosha?",
+    "Can you recommend vitamins for my condition?",
     "Why am I feeling low on energy?",
     "How can I improve my sleep?",
   ];
@@ -78,18 +78,177 @@ const ChatInterface: React.FC = () => {
     setInputText('');
     setIsTyping(true);
     
-    // Simulate AI response after a delay
+    // AI model response simulation
     setTimeout(() => {
-      const aiResponse: Message = {
+      const aiResponse = generateAIResponse(inputText);
+      
+      const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: getAIResponse(inputText),
+        text: aiResponse.text,
         sender: 'ai',
         timestamp: new Date(),
       };
       
-      setMessages(prev => [...prev, aiResponse]);
+      setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
+      
+      // If the AI recommended medicines, show them
+      if (aiResponse.medicines) {
+        setRecommendedMedicines(aiResponse.medicines);
+      }
     }, 1500);
+  };
+
+  const generateAIResponse = (userInput: string) => {
+    const lowercaseInput = userInput.toLowerCase();
+    
+    // Common symptoms and conditions to detect
+    const hasHeadache = lowercaseInput.includes('headache') || lowercaseInput.includes('head pain');
+    const hasFever = lowercaseInput.includes('fever') || lowercaseInput.includes('temperature');
+    const hasCold = lowercaseInput.includes('cold') || lowercaseInput.includes('cough') || lowercaseInput.includes('congestion');
+    const hasSleep = lowercaseInput.includes('sleep') || lowercaseInput.includes('insomnia');
+    const hasStomach = lowercaseInput.includes('stomach') || lowercaseInput.includes('digestion');
+    const hasStress = lowercaseInput.includes('stress') || lowercaseInput.includes('anxiety');
+    const hasEnergy = lowercaseInput.includes('energy') || lowercaseInput.includes('tired') || lowercaseInput.includes('fatigue');
+    
+    let responseText = '';
+    let medicines = null;
+    
+    // Generate appropriate response based on detected conditions
+    if (hasHeadache) {
+      responseText = "Based on your description, you seem to be experiencing headache symptoms. This could be due to stress, dehydration, lack of sleep, or eye strain. I recommend taking a break from screens, drinking water, and resting in a quiet, dark room. If headaches persist for more than 3 days, please consult a doctor.";
+      medicines = [
+        {
+          id: 101,
+          name: "Acetaminophen 500mg",
+          description: "Pain reliever for mild to moderate headaches",
+          price: 0.004,
+          image: "https://images.unsplash.com/photo-1584308572733-34ba083c3a06?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 102,
+          name: "Ibuprofen 200mg",
+          description: "Anti-inflammatory pain reliever",
+          price: 0.005,
+          image: "https://images.unsplash.com/photo-1577344718665-3e7c0c1ecf6b?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+    } else if (hasFever) {
+      responseText = "Fever is usually a sign that your body is fighting an infection. Make sure to rest, stay hydrated, and take appropriate medication to manage your temperature. If your fever exceeds 103°F (39.4°C) or lasts more than three days, seek medical attention.";
+      medicines = [
+        {
+          id: 103,
+          name: "Acetaminophen 500mg",
+          description: "Fever reducer",
+          price: 0.004,
+          image: "https://images.unsplash.com/photo-1584308572733-34ba083c3a06?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 104,
+          name: "Fever Cooling Patches",
+          description: "Helps reduce body temperature",
+          price: 0.006,
+          image: "https://images.unsplash.com/photo-1550572017-69b12867229f?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+    } else if (hasCold) {
+      responseText = "Cold symptoms typically include coughing, sneezing, congestion, and sometimes a mild fever. Rest, stay hydrated, and use over-the-counter medications to manage symptoms. If symptoms worsen or last more than 10 days, you may need medical attention.";
+      medicines = [
+        {
+          id: 105,
+          name: "Cold & Flu Relief",
+          description: "Multi-symptom cold and flu relief",
+          price: 0.008,
+          image: "https://images.unsplash.com/photo-1584308572733-34ba083c3a06?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 106,
+          name: "Throat Lozenges",
+          description: "Soothes sore throat and cough",
+          price: 0.003,
+          image: "https://images.unsplash.com/photo-1550572017-69b12867229f?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+    } else if (hasSleep) {
+      responseText = "Improving sleep quality starts with good sleep hygiene. Maintain a consistent sleep schedule, create a relaxing bedtime routine, limit screen time before bed, and ensure your sleeping environment is comfortable. Consider natural sleep aids before prescription options.";
+      medicines = [
+        {
+          id: 107,
+          name: "Melatonin 5mg",
+          description: "Natural sleep aid supplement",
+          price: 0.005,
+          image: "https://images.unsplash.com/photo-1577344718665-3e7c0c1ecf6b?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 108,
+          name: "Magnesium Glycinate",
+          description: "Promotes muscle relaxation and sleep",
+          price: 0.006,
+          image: "https://images.unsplash.com/photo-1550572017-69b12867229f?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+    } else if (hasStomach) {
+      responseText = "Digestive issues can be caused by diet, stress, or underlying conditions. Stay hydrated, eat smaller meals, and avoid trigger foods. Probiotics may help maintain gut health. If symptoms persist or include severe pain, consult with a healthcare provider.";
+      medicines = [
+        {
+          id: 109,
+          name: "Probiotic Complex",
+          description: "Supports digestive health",
+          price: 0.009,
+          image: "https://images.unsplash.com/photo-1577344718665-3e7c0c1ecf6b?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 110,
+          name: "Antacid Tablets",
+          description: "Relieves heartburn and indigestion",
+          price: 0.004,
+          image: "https://images.unsplash.com/photo-1584308572733-34ba083c3a06?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+    } else if (hasStress) {
+      responseText = "Managing stress is essential for overall well-being. Try relaxation techniques like deep breathing, meditation, or yoga. Regular physical activity, adequate sleep, and healthy eating can also help reduce stress levels. Consider talking to a mental health professional if stress becomes overwhelming.";
+      medicines = [
+        {
+          id: 111,
+          name: "Magnesium Complex",
+          description: "Helps with stress and relaxation",
+          price: 0.007,
+          image: "https://images.unsplash.com/photo-1577344718665-3e7c0c1ecf6b?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 112,
+          name: "L-Theanine",
+          description: "Promotes calmness without drowsiness",
+          price: 0.008,
+          image: "https://images.unsplash.com/photo-1550572017-69b12867229f?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+    } else if (hasEnergy) {
+      responseText = "Low energy levels can be caused by poor sleep, inadequate nutrition, dehydration, stress, or underlying medical conditions. Try to improve your sleep quality, stay hydrated, eat a balanced diet rich in vitamins and minerals, and engage in regular physical activity. B vitamins and iron supplements may help boost energy.";
+      medicines = [
+        {
+          id: 113,
+          name: "B-Complex Vitamins",
+          description: "Supports energy metabolism",
+          price: 0.006,
+          image: "https://images.unsplash.com/photo-1577344718665-3e7c0c1ecf6b?auto=format&fit=crop&q=80&w=400"
+        },
+        {
+          id: 114,
+          name: "Iron + Vitamin C",
+          description: "Helps with energy and oxygen transport",
+          price: 0.007,
+          image: "https://images.unsplash.com/photo-1550572017-69b12867229f?auto=format&fit=crop&q=80&w=400"
+        }
+      ];
+    } else {
+      responseText = "Thank you for your question. Based on the information you've provided, I'd recommend focusing on maintaining a balanced lifestyle with regular exercise, proper nutrition, adequate hydration, and sufficient rest. If you have specific health concerns, please provide more details so I can offer more personalized guidance.";
+    }
+    
+    return {
+      text: responseText,
+      medicines: medicines
+    };
   };
 
   const handleReportAnalysis = (analysis: string) => {
@@ -155,23 +314,6 @@ const ChatInterface: React.FC = () => {
     }, 1000);
   };
 
-  const getAIResponse = (userInput: string): string => {
-    // Simple simulation of AI responses
-    const lowercaseInput = userInput.toLowerCase();
-    
-    if (lowercaseInput.includes('health') || lowercaseInput.includes('status')) {
-      return "Based on your recent vitals and activity patterns, you're maintaining good health. Your heart rate variability has improved by 8% this week, suggesting better stress management. I recommend continuing your meditation practice and perhaps adding 10 minutes of yoga in the morning.";
-    } else if (lowercaseInput.includes('dosha') || lowercaseInput.includes('food')) {
-      return "Your Ayurvedic profile suggests a predominant Pitta dosha. For balance, I recommend cooling foods like cucumber, coconut water, and mint tea. Reduce spicy foods and caffeine. Would you like a personalized meal plan based on this?";
-    } else if (lowercaseInput.includes('energy') || lowercaseInput.includes('tired')) {
-      return "Your energy dip could be related to your recent sleep patterns and slightly elevated stress levels. Consider adjusting your bedtime ritual and adding adaptogenic herbs like Ashwagandha to your regimen. I can suggest a specific supplement from our store if you're interested.";
-    } else if (lowercaseInput.includes('sleep')) {
-      return "Your sleep quality shows room for improvement. Consider establishing a consistent sleep schedule, limiting screen time before bed, and creating a calming bedtime routine. Our analysis suggests that a 10:30 PM bedtime would align best with your natural circadian rhythm.";
-    } else {
-      return "Thank you for your question. Based on your health profile, I would recommend focusing on balanced nutrition, regular exercise, and stress management techniques. Is there a specific aspect of your wellness journey you'd like more personalized guidance on?";
-    }
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -223,7 +365,7 @@ const ChatInterface: React.FC = () => {
             AI Health Assistant
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Your Personal <span className="text-gradient">AI Wellness</span> Guide
+            Your Personal <span className="text-gradient">AI Health</span> Guide
           </h2>
           <p className="text-lg text-muted-foreground">
             Get instant health insights, personalized recommendations, and answers to all your wellness questions.
@@ -239,7 +381,7 @@ const ChatInterface: React.FC = () => {
                   <Bot size={20} />
                 </div>
                 <div>
-                  <h3 className="font-medium">AyurAI Health Assistant</h3>
+                  <h3 className="font-medium">MedAI Health Assistant</h3>
                   <p className="text-sm text-primary-foreground/80">Always online</p>
                 </div>
               </div>
@@ -309,7 +451,7 @@ const ChatInterface: React.FC = () => {
               {/* Recommended Medicines Section */}
               {recommendedMedicines.length > 0 && (
                 <div className="max-w-full mr-auto mb-6 bg-background dark:bg-zinc-800 rounded-xl shadow-sm p-4">
-                  <h3 className="font-medium mb-3">Recommended Medicines Based on Your Report</h3>
+                  <h3 className="font-medium mb-3">Recommended Medicines Based on Your Symptoms</h3>
                   <div className="grid grid-cols-2 gap-3">
                     {recommendedMedicines.map(medicine => (
                       <div key={medicine.id} className="flex border rounded-lg overflow-hidden bg-card">

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { ArrowRight, Heart, Brain, Leaf, Activity } from 'lucide-react';
+import { ArrowRight, Heart, Brain, Activity } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const floatingIconsRef = useRef<HTMLDivElement>(null);
@@ -49,9 +49,6 @@ const HeroSection: React.FC = () => {
         <div className="floating-icon absolute bottom-[30%] left-[10%] p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
           <Activity size={24} className="text-health-amber" />
         </div>
-        <div className="floating-icon absolute bottom-[25%] right-[20%] p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
-          <Leaf size={24} className="text-health-green" />
-        </div>
       </div>
       
       {/* Content */}
@@ -64,10 +61,10 @@ const HeroSection: React.FC = () => {
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               Your <span className="text-gradient">Personalized</span> <br />
-              AI Wellness Companion
+              AI Health Companion
             </h1>
             <p className="text-xl text-muted-foreground max-w-lg">
-              Experience the convergence of ancient Ayurvedic wisdom and cutting-edge AI technology for personalized healthcare.
+              Experience the convergence of medical expertise and cutting-edge AI technology for personalized healthcare.
             </p>
             <div className="flex flex-wrap gap-4">
               <a href="#get-started" className="btn-primary flex items-center gap-2">
@@ -117,11 +114,6 @@ const HeroSection: React.FC = () => {
                     </div>
                     <div className="absolute w-full h-full animate-spin-slow" style={{animationDelay: '-4s'}}>
                       <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-full bg-white dark:bg-zinc-800 shadow-lg">
-                        <Leaf size={24} className="text-health-green" />
-                      </div>
-                    </div>
-                    <div className="absolute w-full h-full animate-spin-slow" style={{animationDelay: '-6s'}}>
-                      <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 p-3 rounded-full bg-white dark:bg-zinc-800 shadow-lg">
                         <Activity size={24} className="text-health-amber" />
                       </div>
                     </div>

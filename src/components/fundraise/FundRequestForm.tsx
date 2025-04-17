@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -140,12 +141,12 @@ const FundRequestForm: React.FC<FundRequestFormProps> = ({ onSubmit }) => {
               name="amountNeeded"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Amount Needed (EDU tokens)</FormLabel>
+                  <FormLabel>Amount Needed (BASE tokens)</FormLabel>
                   <FormControl>
                     <Input type="number" min="1" placeholder="e.g., 5000" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Total EDU tokens needed for your medical expenses
+                    Total BASE tokens needed for your medical expenses
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

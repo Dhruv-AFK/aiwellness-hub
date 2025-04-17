@@ -214,7 +214,7 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
           
           <div className="mt-4 flex flex-wrap gap-2">
             <div className="flex items-center gap-2 text-sm bg-muted/50 px-3 py-1 rounded-full">
-              <span className="font-medium">{doctor.consultationFee} EDU</span>
+              <span className="font-medium">{doctor.consultationFee} BASE</span>
               <span className="text-muted-foreground">per session</span>
             </div>
             
@@ -296,11 +296,11 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
             >
               {isProcessing 
                 ? "Processing Payment..." 
-                : `Book Appointment for ${doctor.consultationFee} EDU ${selectedSlot ? `at ${selectedSlot}` : ''}`
+                : `Book Appointment for ${doctor.consultationFee} BASE ${selectedSlot ? `at ${selectedSlot}` : ''}`
               }
             </Button>
             <p className="text-xs text-center text-muted-foreground">
-              Payment will be processed securely via MetaMask.
+              Payment will be processed securely via MetaMask on Base Sepolia.
             </p>
           </div>
         </div>
@@ -327,11 +327,11 @@ const DoctorsList: React.FC = () => {
             Expert Consultations
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Connect With <span className="text-gradient">Ayurvedic</span> Experts
+            Connect With <span className="text-gradient">Health</span> Experts
           </h2>
           <p className="text-lg text-muted-foreground">
-            Book virtual consultations with certified Ayurvedic practitioners and
-            health experts for personalized guidance and treatment plans.
+            Book virtual consultations with certified health practitioners and
+            experts for personalized guidance and treatment plans.
           </p>
         </div>
         

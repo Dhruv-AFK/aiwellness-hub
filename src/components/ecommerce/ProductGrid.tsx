@@ -146,7 +146,7 @@ const ProductGrid = () => {
             Personalized Products
           </h2>
           <p className="text-muted-foreground max-w-[700px] mb-8">
-            Discover Ayurvedic products tailored to your unique health profile
+            Discover health products tailored to your unique health profile
           </p>
           
           {/* Filters and sort options */}
@@ -218,7 +218,7 @@ const ProductGrid = () => {
                 
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
-                    <span className="text-lg font-bold">{product.price} EDU</span>
+                    <span className="text-lg font-bold">{product.price} BASE</span>
                   </div>
                   <div className="flex items-center">
                     <span className="text-amber-500">★</span>

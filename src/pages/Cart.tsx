@@ -244,7 +244,7 @@ const Cart = () => {
                           </div>
                           
                           <div className="text-right font-medium">
-                            {item.price.toFixed(3)} EDU
+                            {item.price.toFixed(3)} BASE
                           </div>
                         </li>
                       ))}
@@ -261,15 +261,15 @@ const Cart = () => {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span>{calculateTotal().toFixed(3)} EDU</span>
+                      <span>{calculateTotal().toFixed(3)} BASE</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Gas Fees (estimated)</span>
-                      <span>0.001 EDU</span>
+                      <span>0.001 BASE</span>
                     </div>
                     <div className="border-t pt-4 flex justify-between font-bold">
                       <span>Total</span>
-                      <span>{(calculateTotal() + 0.001).toFixed(3)} EDU</span>
+                      <span>{(calculateTotal() + 0.001).toFixed(3)} BASE</span>
                     </div>
                   </CardContent>
                   <CardFooter className="flex flex-col gap-4">
@@ -287,7 +287,7 @@ const Cart = () => {
                       <AlertCircle className="h-4 w-4 text-primary" />
                       <AlertTitle>Secure Transaction</AlertTitle>
                       <AlertDescription className="text-sm">
-                        Your payment will be processed securely via MetaMask.
+                        Your payment will be processed securely via MetaMask on Base Sepolia.
                       </AlertDescription>
                     </Alert>
                   </CardFooter>

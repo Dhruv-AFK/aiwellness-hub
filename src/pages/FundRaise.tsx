@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,7 +35,7 @@ const FundRaise = () => {
             <span className="text-gradient">Wellness Fund</span> Raising
           </h1>
           <p className="text-lg text-muted-foreground">
-            Support fellow community members with medical needs or raise funds for your own treatment using EDU tokens
+            Support fellow community members with medical needs or raise funds for your own treatment using BASE tokens
           </p>
         </div>
 
@@ -47,7 +48,7 @@ const FundRaise = () => {
               <CardTitle>Direct Support</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
-              <p className="text-muted-foreground text-sm">Send EDU tokens directly to those in need, with no middlemen or fees</p>
+              <p className="text-muted-foreground text-sm">Send BASE tokens directly to those in need, with no middlemen or fees</p>
             </CardContent>
           </Card>
 
@@ -71,7 +72,7 @@ const FundRaise = () => {
               <CardTitle>Blockchain Security</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
-              <p className="text-muted-foreground text-sm">Every transaction is secured on EDU Chain with full transparency</p>
+              <p className="text-muted-foreground text-sm">Every transaction is secured on Base Sepolia with full transparency</p>
             </CardContent>
           </Card>
         </div>
@@ -106,13 +107,13 @@ const FundRaise = () => {
 
   function handleDonate(requestId: string) {
     // Simulating MetaMask interaction
-    const amount = window.prompt("Enter amount in EDU tokens to donate:");
+    const amount = window.prompt("Enter amount in BASE tokens to donate:");
     if (!amount) return;
     
     setTimeout(() => {
       toast.success("Transaction initiated! MetaMask popup should appear.");
       simulateMetaMaskTransaction().then(() => {
-        toast.success(`Successfully donated ${amount} EDU tokens!`);
+        toast.success(`Successfully donated ${amount} BASE tokens!`);
       }).catch(() => {
         toast.error("Transaction was cancelled or failed.");
       });
@@ -132,7 +133,7 @@ const FundRaise = () => {
   function simulateMetaMaskTransaction(): Promise<void> {
     return new Promise((resolve, reject) => {
       // Show a mock dialog that looks like MetaMask
-      const confirmed = window.confirm("MetaMask: Confirm transaction of EDU tokens? This will send tokens from your wallet.");
+      const confirmed = window.confirm("MetaMask: Confirm transaction of BASE tokens? This will send tokens from your wallet.");
       
       setTimeout(() => {
         if (confirmed) {

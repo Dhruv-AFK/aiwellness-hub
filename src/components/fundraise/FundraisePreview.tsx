@@ -52,7 +52,7 @@ const FundraisePreview = () => {
             Community Support
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Support Medical Needs with <span className="text-gradient">ETH Tokens</span>
+            Support Medical Needs with <span className="text-gradient">EDU Tokens</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             Help fellow community members with their medical expenses or create your own fund request

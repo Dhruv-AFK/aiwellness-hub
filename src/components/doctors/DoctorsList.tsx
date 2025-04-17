@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Calendar, Clock, Video, MessageSquare, Star, ChevronRight, MapPin, Filter } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -114,6 +115,7 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
     setIsProcessing(true);
     
     try {
+      // Check if MetaMask is installed
       if (!window.ethereum) {
         toast({
           title: "MetaMask not detected",
@@ -124,6 +126,7 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
         return;
       }
       
+      // Request account access
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       
       if (accounts.length === 0) {
@@ -133,23 +136,27 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
       const consultationFee = doctor.consultationFee;
       const feeInWei = `0x${(consultationFee * 1e18).toString(16)}`;
       
+      // Create transaction parameters
       const transactionParameters = {
-        to: '0x0000000000000000000000000000000000000000',
+        to: '0x0000000000000000000000000000000000000000', // Replace with actual recipient address
         from: accounts[0],
         value: feeInWei,
-        gas: '0x5208',
+        gas: '0x5208', // 21000 gas
       };
       
+      // Send transaction
       const txHash = await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [transactionParameters],
       });
       
+      // Success!
       toast({
         title: "Booking Confirmed!",
         description: `Your appointment with ${doctor.name} at ${selectedSlot} has been booked successfully.`,
       });
       
+      // Reset state after successful booking
       setSelectedSlot(null);
       setExpanded(false);
       
@@ -207,7 +214,7 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
           
           <div className="mt-4 flex flex-wrap gap-2">
             <div className="flex items-center gap-2 text-sm bg-muted/50 px-3 py-1 rounded-full">
-              <span className="font-medium">{doctor.consultationFee} ETH</span>
+              <span className="font-medium">{doctor.consultationFee} EDU</span>
               <span className="text-muted-foreground">per session</span>
             </div>
             
@@ -289,11 +296,11 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
             >
               {isProcessing 
                 ? "Processing Payment..." 
-                : `Book Appointment for ${doctor.consultationFee} ETH ${selectedSlot ? `at ${selectedSlot}` : ''}`
+                : `Book Appointment for ${doctor.consultationFee} EDU ${selectedSlot ? `at ${selectedSlot}` : ''}`
               }
             </Button>
             <p className="text-xs text-center text-muted-foreground">
-              Payment will be processed securely via MetaMask on Ethereum.
+              Payment will be processed securely via MetaMask.
             </p>
           </div>
         </div>
@@ -320,11 +327,11 @@ const DoctorsList: React.FC = () => {
             Expert Consultations
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Connect With <span className="text-gradient">Health</span> Experts
+            Connect With <span className="text-gradient">Ayurvedic</span> Experts
           </h2>
           <p className="text-lg text-muted-foreground">
-            Book virtual consultations with certified health practitioners and
-            experts for personalized guidance and treatment plans.
+            Book virtual consultations with certified Ayurvedic practitioners and
+            health experts for personalized guidance and treatment plans.
           </p>
         </div>
         

@@ -185,46 +185,7 @@ const HealthDashboard: React.FC = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="health-card">
-            <h3 className="text-xl font-bold mb-6">Dosha Balance</h3>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-foreground font-medium">Vata</span>
-                  <span className="text-muted-foreground">40%</span>
-                </div>
-                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-health-purple rounded-full" style={{ width: '40%' }} />
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-foreground font-medium">Pitta</span>
-                  <span className="text-muted-foreground">35%</span>
-                </div>
-                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-health-amber rounded-full" style={{ width: '35%' }} />
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-foreground font-medium">Kapha</span>
-                  <span className="text-muted-foreground">25%</span>
-                </div>
-                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-health-teal rounded-full" style={{ width: '25%' }} />
-                </div>
-              </div>
-            </div>
-            <div className="mt-6 p-4 rounded-xl bg-muted/50">
-              <p className="text-muted-foreground text-sm">
-                Your current dosha balance suggests a slight Vata dominance. 
-                Consider grounding activities and warming foods to maintain balance.
-              </p>
-            </div>
-          </div>
-          
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
           <div className="health-card">
             <h3 className="text-xl font-bold mb-6">Personalized Health Tips</h3>
             <div className="space-y-4">
@@ -247,7 +208,7 @@ const HealthDashboard: React.FC = () => {
                 <div>
                   <h4 className="font-medium">Balance Your Diet</h4>
                   <p className="text-muted-foreground text-sm">
-                    Include more warming spices like ginger and cinnamon to balance your Vata dosha.
+                    Include more warming spices like ginger and cinnamon to balance your health.
                   </p>
                 </div>
               </div>

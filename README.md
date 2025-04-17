@@ -1,11 +1,11 @@
 
-# 🌿 AI Wellness Hub – Decentralized Health & Telemedicine on Base Sepolia  
+# 🌿 AI Wellness Hub – Decentralized Health & Telemedicine on Ethereum  
 
 **AI Wellness Hub** is a **Web3-powered health ecosystem** that integrates **blockchain, AI, and decentralized crowdfunding** to make healthcare more **accessible, transparent, and affordable**.  
 
-🌍 **Built on Base Sepolia**, this platform allows users to:  
+🌍 **Built on Ethereum**, this platform allows users to:  
 ✅ **Raise wellness funds** via decentralized **crowdfunding** (TVL growth)  
-✅ **Book doctor consultations** & pay via **BASE tokens**  
+✅ **Book doctor consultations** & pay via **ETH tokens**  
 ✅ **Verify consultations using AI** to prevent fraud  
 ✅ **Own & control health data** on-chain  
 
@@ -40,7 +40,7 @@
 |----------------|------------------------------------------------|
 | **Solidity**   | Smart contracts for crowdfunding & doctor payments |
 | **Hardhat**    | Contract deployment & testing |
-| **Ethers.js**  | Web3 integration & Base Sepolia transactions |
+| **Ethers.js**  | Web3 integration & Ethereum transactions |
 | **React.js**   | User-friendly & interactive frontend |
 | **MetaMask**   | Wallet authentication for blockchain transactions |
 | **Remix IDE**  | Quick contract deployment & testing |

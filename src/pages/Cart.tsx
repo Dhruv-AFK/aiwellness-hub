@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,12 +18,10 @@ interface CartItem {
 }
 
 const Cart = () => {
-  // Get cart items from localStorage or use empty array
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
   
-  // Load cart items from localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     const initialCart: CartItem[] = savedCart ? JSON.parse(savedCart) : [];
@@ -44,7 +41,6 @@ const Cart = () => {
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     
-    // Dispatch a custom event to notify other components
     window.dispatchEvent(new Event('cartUpdated'));
   };
   
@@ -53,7 +49,6 @@ const Cart = () => {
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     
-    // Dispatch a custom event to notify other components
     window.dispatchEvent(new Event('cartUpdated'));
     
     toast({
@@ -66,7 +61,6 @@ const Cart = () => {
     setCartItems([]);
     localStorage.removeItem('cart');
     
-    // Dispatch a custom event to notify other components
     window.dispatchEvent(new Event('cartUpdated'));
     
     toast({
@@ -82,7 +76,6 @@ const Cart = () => {
   const handleMetaMaskCheckout = async () => {
     setIsProcessing(true);
     
-    // Check if MetaMask is installed
     if (!window.ethereum) {
       toast({
         title: "MetaMask not detected",
@@ -94,7 +87,6 @@ const Cart = () => {
     }
     
     try {
-      // Request account access
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       
       if (accounts.length === 0) {
@@ -104,31 +96,26 @@ const Cart = () => {
       const total = calculateTotal();
       const totalInWei = `0x${(total * 1e18).toString(16)}`;
       
-      // Create transaction parameters
       const transactionParameters = {
-        to: '0x0000000000000000000000000000000000000000', // Replace with actual recipient address
+        to: '0x0000000000000000000000000000000000000000',
         from: accounts[0],
         value: totalInWei,
-        gas: '0x5208', // 21000 gas
+        gas: '0x5208',
       };
       
-      // Send transaction
       const txHash = await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [transactionParameters],
       });
       
-      // Success!
       toast({
         title: "Payment successful!",
         description: `Transaction hash: ${txHash.slice(0, 10)}...${txHash.slice(-8)}`,
       });
       
-      // Clear cart
       setCartItems([]);
       localStorage.removeItem('cart');
       
-      // Dispatch a custom event to notify other components
       window.dispatchEvent(new Event('cartUpdated'));
       
     } catch (error) {
@@ -143,7 +130,6 @@ const Cart = () => {
     }
   };
 
-  // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -261,15 +247,15 @@ const Cart = () => {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span>{calculateTotal().toFixed(3)} BASE</span>
+                      <span>{calculateTotal().toFixed(3)} ETH</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Gas Fees (estimated)</span>
-                      <span>0.001 BASE</span>
+                      <span>0.001 ETH</span>
                     </div>
                     <div className="border-t pt-4 flex justify-between font-bold">
                       <span>Total</span>
-                      <span>{(calculateTotal() + 0.001).toFixed(3)} BASE</span>
+                      <span>{(calculateTotal() + 0.001).toFixed(3)} ETH</span>
                     </div>
                   </CardContent>
                   <CardFooter className="flex flex-col gap-4">

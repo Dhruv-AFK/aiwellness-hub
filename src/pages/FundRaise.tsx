@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,75 @@ import FundRequest from '@/components/fundraise/FundRequest';
 import FundRequestForm from '@/components/fundraise/FundRequestForm';
 import { toast } from 'sonner';
 import { useLocation } from 'react-router-dom';
+
+const fundRequests = [
+  {
+    id: "fr1",
+    name: "John Doe",
+    title: "Kidney Transplant Surgery",
+    description: "I need help funding my upcoming kidney transplant surgery. I've been on dialysis for 3 years and finally found a donor match.",
+    amountNeeded: 5,
+    amountRaised: 3.2,
+    daysLeft: 15,
+    verifiedReport: true,
+    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+  },
+  {
+    id: "fr2",
+    name: "Jane Smith",
+    title: "Cancer Treatment Support",
+    description: "Diagnosed with stage 2 breast cancer, I need support for chemotherapy and related expenses not covered by insurance.",
+    amountNeeded: 8,
+    amountRaised: 4.75,
+    daysLeft: 23,
+    verifiedReport: true,
+    image: "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+  },
+  {
+    id: "fr3",
+    name: "Michael Johnson",
+    title: "Physical Therapy After Accident",
+    description: "After a severe car accident, I need extensive physical therapy. My insurance only covers a portion of the treatments.",
+    amountNeeded: 3000,
+    amountRaised: 1800,
+    daysLeft: 30,
+    verifiedReport: true,
+    image: "https://images.unsplash.com/photo-1494774157155-7e04a4b4caab?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+  },
+  {
+    id: "fr4",
+    name: "Sarah Wilson",
+    title: "Rare Disease Medication",
+    description: "I've been diagnosed with a rare autoimmune disease and need help affording specialized medication not covered by insurance.",
+    amountNeeded: 12000,
+    amountRaised: 7500,
+    daysLeft: 45,
+    verifiedReport: true,
+    image: "https://images.unsplash.com/photo-1631815588090-d1bcbe9adb38?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+  },
+  {
+    id: "fr5",
+    name: "David Lee",
+    title: "Child's Surgery Fund",
+    description: "My 5-year-old son needs heart surgery. We're seeking support for medical bills and recovery expenses.",
+    amountNeeded: 15000,
+    amountRaised: 9200,
+    daysLeft: 10,
+    verifiedReport: true,
+    image: "https://images.unsplash.com/photo-1612531385446-f7e6d131e1d0?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+  },
+  {
+    id: "fr6",
+    name: "Emily Brown",
+    title: "Mental Health Treatment",
+    description: "Seeking support for intensive mental health treatment program. Insurance only covers minimal therapy sessions.",
+    amountNeeded: 4500,
+    amountRaised: 2000,
+    daysLeft: 20,
+    verifiedReport: true,
+    image: "https://images.unsplash.com/photo-1559757175-7cb05f6d89ef?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+  }
+];
 
 const FundRaise = () => {
   const location = useLocation();
@@ -35,7 +103,7 @@ const FundRaise = () => {
             <span className="text-gradient">Wellness Fund</span> Raising
           </h1>
           <p className="text-lg text-muted-foreground">
-            Support fellow community members with medical needs or raise funds for your own treatment using BASE tokens
+            Support fellow community members with medical needs or raise funds for your own treatment using ETH tokens
           </p>
         </div>
 
@@ -48,7 +116,7 @@ const FundRaise = () => {
               <CardTitle>Direct Support</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
-              <p className="text-muted-foreground text-sm">Send BASE tokens directly to those in need, with no middlemen or fees</p>
+              <p className="text-muted-foreground text-sm">Send ETH tokens directly to those in need, with no middlemen or fees</p>
             </CardContent>
           </Card>
 
@@ -107,13 +175,13 @@ const FundRaise = () => {
 
   function handleDonate(requestId: string) {
     // Simulating MetaMask interaction
-    const amount = window.prompt("Enter amount in BASE tokens to donate:");
+    const amount = window.prompt("Enter amount in ETH to donate:");
     if (!amount) return;
     
     setTimeout(() => {
       toast.success("Transaction initiated! MetaMask popup should appear.");
       simulateMetaMaskTransaction().then(() => {
-        toast.success(`Successfully donated ${amount} BASE tokens!`);
+        toast.success(`Successfully donated ${amount} ETH!`);
       }).catch(() => {
         toast.error("Transaction was cancelled or failed.");
       });
@@ -133,7 +201,7 @@ const FundRaise = () => {
   function simulateMetaMaskTransaction(): Promise<void> {
     return new Promise((resolve, reject) => {
       // Show a mock dialog that looks like MetaMask
-      const confirmed = window.confirm("MetaMask: Confirm transaction of BASE tokens? This will send tokens from your wallet.");
+      const confirmed = window.confirm("MetaMask: Confirm transaction of ETH tokens? This will send tokens from your wallet.");
       
       setTimeout(() => {
         if (confirmed) {
@@ -145,74 +213,5 @@ const FundRaise = () => {
     });
   }
 };
-
-const fundRequests = [
-  {
-    id: "fr1",
-    name: "John Doe",
-    title: "Kidney Transplant Surgery",
-    description: "I need help funding my upcoming kidney transplant surgery. I've been on dialysis for 3 years and finally found a donor match.",
-    amountNeeded: 5000,
-    amountRaised: 3200,
-    daysLeft: 15,
-    verifiedReport: true,
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-  },
-  {
-    id: "fr2",
-    name: "Jane Smith",
-    title: "Cancer Treatment Support",
-    description: "Diagnosed with stage 2 breast cancer, I need support for chemotherapy and related expenses not covered by insurance.",
-    amountNeeded: 8000,
-    amountRaised: 4750,
-    daysLeft: 23,
-    verifiedReport: true,
-    image: "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-  },
-  {
-    id: "fr3",
-    name: "Michael Johnson",
-    title: "Physical Therapy After Accident",
-    description: "After a severe car accident, I need extensive physical therapy. My insurance only covers a portion of the treatments.",
-    amountNeeded: 3000,
-    amountRaised: 1800,
-    daysLeft: 30,
-    verifiedReport: true,
-    image: "https://images.unsplash.com/photo-1494774157155-7e04a4b4caab?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-  },
-  {
-    id: "fr4",
-    name: "Sarah Wilson",
-    title: "Rare Disease Medication",
-    description: "I've been diagnosed with a rare autoimmune disease and need help affording specialized medication not covered by insurance.",
-    amountNeeded: 12000,
-    amountRaised: 7500,
-    daysLeft: 45,
-    verifiedReport: true,
-    image: "https://images.unsplash.com/photo-1631815588090-d1bcbe9adb38?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-  },
-  {
-    id: "fr5",
-    name: "David Lee",
-    title: "Child's Surgery Fund",
-    description: "My 5-year-old son needs heart surgery. We're seeking support for medical bills and recovery expenses.",
-    amountNeeded: 15000,
-    amountRaised: 9200,
-    daysLeft: 10,
-    verifiedReport: true,
-    image: "https://images.unsplash.com/photo-1612531385446-f7e6d131e1d0?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-  },
-  {
-    id: "fr6",
-    name: "Emily Brown",
-    title: "Mental Health Treatment",
-    description: "Seeking support for intensive mental health treatment program. Insurance only covers minimal therapy sessions.",
-    amountNeeded: 4500,
-    amountRaised: 2000,
-    daysLeft: 20,
-    verifiedReport: true,
-    image: "https://images.unsplash.com/photo-1559757175-7cb05f6d89ef?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-  }
-];
 
 export default FundRaise;

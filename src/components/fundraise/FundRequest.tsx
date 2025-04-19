@@ -48,8 +48,8 @@ const FundRequest: React.FC<FundRequestProps> = ({ request, onDonate, onViewRepo
         
         <div className="space-y-1">
           <div className="flex justify-between text-sm">
-            <span>{request.amountRaised} EDU raised</span>
-            <span className="font-medium">{request.amountNeeded} EDU goal</span>
+            <span>{request.amountRaised} ETH raised</span>
+            <span className="font-medium">{request.amountNeeded} ETH goal</span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
         </div>
@@ -77,7 +77,7 @@ const FundRequest: React.FC<FundRequestProps> = ({ request, onDonate, onViewRepo
           className="w-full text-xs"
         >
           <HandCoins className="mr-1 h-4 w-4" />
-          Donate EDU
+          Donate ETH
         </Button>
       </CardFooter>
     </Card>

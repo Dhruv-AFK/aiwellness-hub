@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, Wallet, ShoppingCart } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, Wallet, ShoppingCart, HandCoins } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Link } from 'react-router-dom';
 
@@ -22,6 +21,7 @@ const navItems: NavItem[] = [
     ]
   },
   { label: 'Products', href: '#products' },
+  { label: 'Fundraise', href: '/fundraise' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
 ];
@@ -100,14 +100,12 @@ const Navbar: React.FC = () => {
         return;
       }
 
-      // Request connection to Base Sepolia network
       try {
         await ethereum.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x14A34' }], // Base Sepolia chainId in hex
+          params: [{ chainId: '0x14A34' }],
         });
       } catch (switchError: any) {
-        // This error code indicates that the chain has not been added to MetaMask
         if (switchError.code === 4902) {
           try {
             await ethereum.request({
@@ -161,16 +159,17 @@ const Navbar: React.FC = () => {
         <div className="hidden md:flex items-center space-x-1">
           {navItems.map((item) => (
             <div key={item.label} className="relative group">
-              <a
-                href={item.href}
+              <Link
+                to={item.href.startsWith('/') ? item.href : '#'}
                 className="px-4 py-2 rounded-full text-foreground hover:bg-muted transition-colors duration-200 flex items-center"
                 onClick={() => item.children && setOpenDropdown(openDropdown === item.label ? null : item.label)}
               >
+                {item.label === 'Fundraise' && <HandCoins className="mr-2 h-4 w-4" />}
                 {item.label}
                 {item.children && (
                   <ChevronDown className="ml-1 h-4 w-4" />
                 )}
-              </a>
+              </Link>
               
               {item.children && (
                 <div className="absolute left-0 mt-1 w-48 rounded-xl bg-white dark:bg-zinc-900 shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -245,8 +244,8 @@ const Navbar: React.FC = () => {
         <div className="flex flex-col space-y-4">
           {navItems.map((item) => (
             <div key={item.label}>
-              <a
-                href={item.href}
+              <Link
+                to={item.href.startsWith('/') ? item.href : '#'}
                 className="block py-3 px-4 text-lg font-medium text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
                 onClick={() => {
                   if (!item.children) setIsOpen(false);
@@ -254,6 +253,7 @@ const Navbar: React.FC = () => {
                 }}
               >
                 <div className="flex justify-between items-center">
+                  {item.label === 'Fundraise' && <HandCoins className="mr-2 h-4 w-4" />}
                   {item.label}
                   {item.children && (
                     <ChevronDown className={cn(
@@ -262,7 +262,7 @@ const Navbar: React.FC = () => {
                     )} />
                   )}
                 </div>
-              </a>
+              </Link>
               
               {item.children && openDropdown === item.label && (
                 <div className="mt-1 pl-4 border-l-2 border-muted space-y-2">
